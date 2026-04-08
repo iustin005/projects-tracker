@@ -229,7 +229,7 @@ async function signInWithMagicLink(email) {
       body: JSON.stringify({ 
         email, 
         create_user: true,
-        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+        options: { emailRedirectTo: window.location.href.split('#')[0] }
       })
     });
     
