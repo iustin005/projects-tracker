@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f9f9f8;--surface:#ffffff;--surface2:#f1f0ee;
+  --border:#e4e3e0;--border2:#d0cfcc;
+  --text:#1a1a18;--text2:#6b6a66;--text3:#a09f9b;
+  --blue-bg:#e6f1fb;--blue-text:#0c447c;
+  --purple-bg:#eeedfe;--purple-text:#3c3489;
+  --amber-bg:#faeeda;--amber-text:#633806;
+  --green-bg:#eaf3de;--green-text:#27500a;
+  --red-bg:#fcebeb;--red-text:#a32d2d;
+  --radius:10px;--radius-sm:6px;
+  --font:'DM Sans',system-ui,sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#141413;--surface:#1e1e1c;--surface2:#272725;
+    --border:#2e2e2b;--border2:#3a3a36;
+    --text:#f0efe9;--text2:#9b9a96;--text3:#5a5955;
+    --blue-bg:#0c2a44;--blue-text:#85b7eb;
+    --purple-bg:#1e1b3d;--purple-text:#afa9ec;
+    --amber-bg:#2e1f05;--amber-text:#fac775;
+    --green-bg:#162208;--green-text:#c0dd97;
+    --red-bg:#2a0f0f;--red-text:#f09595;
+  }
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;}
+
+/* Auth screen */
+.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.auth-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:100%;max-width:360px;text-align:center;}
+.auth-box h1{font-size:22px;font-weight:600;margin-bottom:6px;}
+.auth-box p{font-size:13px;color:var(--text2);margin-bottom:1.5rem;}
+.auth-box input{width:100%;font-size:14px;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--font);outline:none;margin-bottom:12px;}
+.auth-box input:focus{border-color:var(--blue-text);}
+.auth-btn{width:100%;font-size:14px;padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-weight:500;font-family:var(--font);}
+.auth-btn:hover{background:var(--border);}
+.auth-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.auth-msg{font-size:13px;margin-top:1rem;padding:10px;border-radius:var(--radius-sm);}
+.auth-msg.success{background:var(--green-bg);color:var(--green-text);}
+.auth-msg.error{background:var(--red-bg);color:var(--red-text);}
+
+/* Shell */
+.shell{max-width:960px;margin:0 auto;padding:2.5rem 1.5rem 4rem;}
+.top-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;flex-wrap:wrap;gap:12px;}
+.header h1{font-size:24px;font-weight:600;letter-spacing:-0.3px;}
+.header p{font-size:13px;color:var(--text2);margin-top:3px;}
+.header-actions{display:flex;gap:8px;align-items:center;}
+.user-badge{font-size:12px;color:var(--text2);padding:6px 12px;background:var(--surface2);border-radius:var(--radius-sm);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.logout-btn{font-size:12px;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;}
+.logout-btn:hover{background:var(--surface2);}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;}
+@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr);}}
+.stat{background:var(--surface2);border-radius:var(--radius-sm);padding:12px 14px;}
+.stat-label{font-size:11px;color:var(--text2);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.4px;}
+.stat-val{font-size:24px;font-weight:600;}
+
+/* Filters */
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.25rem;}
+.fbtn{font-size:12px;padding:5px 13px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
+.fbtn:hover{background:var(--surface2);}
+.fbtn.active{background:var(--surface);color:var(--text);border-color:var(--border2);font-weight:500;}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:9px;transition:border-color .15s;cursor:pointer;}
+.card:hover{border-color:var(--border2);}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.card-title{font-size:14px;font-weight:600;color:var(--text);flex:1;line-height:1.4;}
+.badge{font-size:11px;padding:3px 9px;border-radius:999px;white-space:nowrap;font-weight:500;}
+.b-inprogress{background:var(--blue-bg);color:var(--blue-text);}
+.b-planned{background:var(--purple-bg);color:var(--purple-text);}
+.b-paused{background:var(--amber-bg);color:var(--amber-text);}
+.b-done{background:var(--green-bg);color:var(--green-text);}
+.card-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.tags{display:flex;gap:5px;flex-wrap:wrap;}
+.tag{font-size:11px;padding:2px 7px;border-radius:4px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+.prog-row{display:flex;align-items:center;gap:9px;}
+.prog-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;}
+.pf-inprogress{background:#378ADD;}
+.pf-planned{background:#7f77dd;}
+.pf-paused{background:#ba7517;}
+.pf-done{background:#639922;}
+.prog-pct{font-size:11px;color:var(--text3);min-width:28px;text-align:right;}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:2px;}
+.card-link{font-size:12px;color:var(--blue-text);}
+.no-link{font-size:12px;color:var(--text3);}
+.card-actions{display:flex;gap:6px;}
+.act-btn{font-size:11px;padding:3px 9px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
+.act-btn:hover{background:var(--surface2);}
+.del-btn{color:var(--red-text);border-color:var(--red-bg);}
+.del-btn:hover{background:var(--red-bg);}
+.add-btn{font-size:13px;padding:7px 16px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;font-weight:500;transition:all .15s;}
+.add-btn:hover{background:var(--surface2);}
+.empty{text-align:center;padding:3rem 0;color:var(--text2);font-size:14px;grid-column:1/-1;}
+.loading{text-align:center;padding:3rem 0;color:var(--text3);font-size:14px;}
+
+/* Todo count pill on card */
+.todo-pill{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);}
+
+/* Edit/Add modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-start;justify-content:center;padding:2.5rem 1rem;z-index:100;overflow-y:auto;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:1.5rem;width:100%;max-width:440px;}
+.modal h2{font-size:17px;font-weight:600;margin-bottom:1.1rem;}
+.field{margin-bottom:11px;}
+.field label{display:block;font-size:11px;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
+.field input,.field textarea,.field select{width:100%;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--font);outline:none;transition:border-color .15s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue-text);}
+.field textarea{resize:vertical;min-height:70px;line-height:1.5;}
+.range-row{display:flex;align-items:center;gap:10px;}
+.range-row input[type=range]{flex:1;accent-color:#378ADD;}
+.range-val{font-size:13px;font-weight:500;min-width:36px;text-align:right;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;}
+.btn-primary{font-size:13px;padding:7px 18px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-weight:500;}
+.btn-primary:hover{background:var(--border);}
+.btn-cancel{font-size:13px;padding:7px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;}
+.btn-cancel:hover{background:var(--surface2);}
+
+/* Detail page */
+.detail-overlay{position:fixed;inset:0;background:var(--bg);z-index:200;overflow-y:auto;display:flex;flex-direction:column;}
+.detail-shell{max-width:760px;margin:0 auto;padding:2rem 1.5rem 4rem;width:100%;}
+.detail-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text2);cursor:pointer;border:none;background:none;padding:0;margin-bottom:1.75rem;font-family:var(--font);}
+.detail-back:hover{color:var(--text);}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem;}
+.detail-title{font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+.detail-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px;}
+.detail-desc{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1.5rem;}
+.detail-prog-row{display:flex;align-items:center;gap:12px;margin-bottom:1.75rem;}
+.detail-prog-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.detail-prog-fill{height:100%;border-radius:3px;background:#378ADD;transition:width .3s;}
+.detail-prog-pct{font-size:13px;font-weight:500;color:var(--text2);min-width:36px;}
+
+/* Todos */
+.todos-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;}
+.todos-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.todos-title{font-size:15px;font-weight:600;}
+.todo-add-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;}
+.todo-add-row input{flex:1;min-width:140px;font-size:13px;padding:7px 10px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--font);outline:none;}
+.todo-add-row input:focus{border-color:var(--blue-text);}
+.todo-add-row select{font-size:12px;padding:7px 8px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--font);outline:none;cursor:pointer;}
+.todo-add-row input[type=date]{font-size:12px;padding:7px 8px;}
+.todo-add-btn{font-size:13px;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;font-weight:500;white-space:nowrap;}
+.todo-add-btn:hover{background:var(--border);}
+.todo-list{display:flex;flex-direction:column;gap:6px;}
+.todo-item{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);transition:border-color .15s;}
+.todo-item:hover{border-color:var(--border2);}
+.todo-item.done-item{opacity:.55;}
+.todo-check{width:16px;height:16px;margin-top:2px;accent-color:#378ADD;cursor:pointer;flex-shrink:0;}
+.todo-body{flex:1;min-width:0;}
+.todo-text{font-size:13px;color:var(--text);line-height:1.4;}
+.todo-item.done-item .todo-text{text-decoration:line-through;color:var(--text3);}
+.todo-sub{display:flex;gap:8px;align-items:center;margin-top:3px;flex-wrap:wrap;}
+.priority-badge{font-size:10px;padding:1px 7px;border-radius:999px;font-weight:500;}
+.p-high{background:var(--red-bg);color:var(--red-text);}
+.p-medium{background:var(--amber-bg);color:var(--amber-text);}
+.p-low{background:var(--green-bg);color:var(--green-text);}
+.due-label{font-size:11px;color:var(--text3);}
+.due-overdue{color:var(--red-text);}
+.todo-del{font-size:11px;padding:1px 7px;border-radius:var(--radius-sm);border:1px solid transparent;background:transparent;color:var(--text3);cursor:pointer;margin-left:auto;flex-shrink:0;}
+.todo-del:hover{background:var(--red-bg);color:var(--red-text);border-color:var(--red-bg);}
+.todo-empty{text-align:center;padding:1.5rem 0;color:var(--text3);font-size:13px;}
+.todo-filters{display:flex;gap:6px;margin-bottom:1rem;}
+.todo-fbtn{font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;}
+.todo-fbtn.active{background:var(--surface2);color:var(--text);font-weight:500;}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--text);color:var(--bg);font-size:13px;padding:10px 16px;border-radius:var(--radius-sm);z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// ⚙️ CONFIGURATION - Replace these with your Supabase values
+// ═══════════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://eqsefowfqydikclmcecx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxc2Vmb3dmcXlkaWtjbG1jZWN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjA4MjYsImV4cCI6MjA5MTE5NjgyNn0.5Ftgh3xu6gXa_zZlB09xecbi_D_U_Q-PzUPdHkpsv_8';
+// ═══════════════════════════════════════════════════════════
+
+const STATUS_LABELS = {inprogress:'In Progress',planned:'Planned',paused:'Paused',done:'Done'};
+const STATUSES = ['inprogress','planned','paused','done'];
+const FILTER_LABELS = ['All','In Progress','Planned','Paused','Done'];
+const PRIORITIES = ['high','medium','low'];
+
+let currentUser = null;
+let accessToken = null;
+let projects = [];
+let todos = {};
+let activeFilter = 'All';
+let modal = null;
+let detailProjectId = null;
+let todoFilter = 'all';
+let loading = true;
+let authLoading = false;
+let authMessage = null;
+
+// ── Auth helpers ─────────────────────────────────────────
+function getHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + (accessToken || SUPABASE_KEY),
+    'Prefer': 'return=representation'
+  };
+}
+
+async function signInWithMagicLink(email) {
+  authLoading = true;
+  authMessage = null;
+  render();
+  
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+      body: JSON.stringify({ 
+        email, 
+        create_user: true,
+        options: { emailRedirectTo: window.location.origin + window.location.pathname }
+      })
+    });
+    
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error_description || err.msg || 'Failed to send magic link');
+    }
+    
+    authMessage = { type: 'success', text: 'Check your email for the login link!' };
+  } catch (e) {
+    authMessage = { type: 'error', text: e.message };
+  }
+  
+  authLoading = false;
+  render();
+}
+
+async function handleAuthCallback() {
+  const hash = window.location.hash;
+  if (!hash) return false;
+  
+  const params = new URLSearchParams(hash.substring(1));
+  const access_token = params.get('access_token');
+  const refresh_token = params.get('refresh_token');
+  
+  if (access_token) {
+    accessToken = access_token;
+    localStorage.setItem('sb_access_token', access_token);
+    if (refresh_token) localStorage.setItem('sb_refresh_token', refresh_token);
+    
+    // Get user info
+    try {
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { 'Authorization': 'Bearer ' + access_token, 'apikey': SUPABASE_KEY }
+      });
+      if (res.ok) {
+        currentUser = await res.json();
+      }
+    } catch (e) {}
+    
+    // Clean URL
+    window.history.replaceState(null, '', window.location.pathname);
+    return true;
+  }
+  return false;
+}
+
+async function checkExistingSession() {
+  const token = localStorage.getItem('sb_access_token');
+  if (!token) return false;
+  
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_KEY }
+    });
+    if (res.ok) {
+      currentUser = await res.json();
+      accessToken = token;
+      return true;
+    } else {
+      // Token expired, try refresh
+      const refreshToken = localStorage.getItem('sb_refresh_token');
+      if (refreshToken) {
+        const refreshRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+          body: JSON.stringify({ refresh_token: refreshToken })
+        });
+        if (refreshRes.ok) {
+          const data = await refreshRes.json();
+          accessToken = data.access_token;
+          localStorage.setItem('sb_access_token', data.access_token);
+          if (data.refresh_token) localStorage.setItem('sb_refresh_token', data.refresh_token);
+          currentUser = data.user;
+          return true;
+        }
+      }
+      localStorage.removeItem('sb_access_token');
+      localStorage.removeItem('sb_refresh_token');
+    }
+  } catch (e) {}
+  return false;
+}
+
+function logout() {
+  currentUser = null;
+  accessToken = null;
+  projects = [];
+  todos = {};
+  localStorage.removeItem('sb_access_token');
+  localStorage.removeItem('sb_refresh_token');
+  render();
+}
+
+// ── API helpers ──────────────────────────────────────────
+async function api(path, method='GET', body=null){
+  const opts = {method, headers: getHeaders()};
+  if(body) opts.body = JSON.stringify(body);
+  const r = await fetch(SUPABASE_URL+'/rest/v1/'+path, opts);
+  if(!r.ok){ const e=await r.text(); throw new Error(e); }
+  if(r.status===204) return null;
+  return r.json();
+}
+
+async function loadProjects(){
+  return api('projects?select=*&order=created_at.asc');
+}
+async function loadTodos(project_id){
+  return api(`todos?project_id=eq.${project_id}&order=created_at.asc`);
+}
+async function createProject(p){
+  return api('projects', 'POST', {...p, user_id: currentUser.id});
+}
+async function updateProject(id, p){
+  return api(`projects?id=eq.${id}`, 'PATCH', p);
+}
+async function deleteProjectApi(id){
+  return api(`projects?id=eq.${id}`, 'DELETE');
+}
+async function createTodo(t){
+  return api('todos', 'POST', t);
+}
+async function updateTodo(id, t){
+  return api(`todos?id=eq.${id}`, 'PATCH', t);
+}
+async function deleteTodoApi(id){
+  return api(`todos?id=eq.${id}`, 'DELETE');
+}
+
+// ── Toast ────────────────────────────────────────────────
+let toastTimer;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2500);
+}
+
+// ── Utilities ────────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(d){if(!d)return'';const [y,m,day]=d.split('-');return `${day}/${m}/${y}`;}
+function isOverdue(d){if(!d)return false;return new Date(d)<new Date(new Date().toDateString());}
+function todoCount(pid){const t=todos[pid]||[];return{total:t.length,done:t.filter(x=>x.done).length};}
+
+// ── Init ─────────────────────────────────────────────────
+async function init(){
+  render();
+  
+  // Check for magic link callback
+  const fromCallback = await handleAuthCallback();
+  if (!fromCallback) {
+    await checkExistingSession();
+  }
+  
+  if (currentUser) {
+    try {
+      projects = await loadProjects();
+      loading = false;
+      render();
+    } catch(e) {
+      loading = false;
+      toast('Failed to load projects');
+      render();
+    }
+  } else {
+    loading = false;
+    render();
+  }
+}
+
+// ── Auth screen ──────────────────────────────────────────
+function renderAuth() {
+  document.getElementById('app').innerHTML = `
+    <div class="auth-screen">
+      <div class="auth-box">
+        <h1>My Projects</h1>
+        <p>Sign in with your email to access your projects</p>
+        <input type="email" id="auth-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')handleLogin()"/>
+        <button class="auth-btn" onclick="handleLogin()" ${authLoading ? 'disabled' : ''}>
+          ${authLoading ? 'Sending...' : 'Send magic link'}
+        </button>
+        ${authMessage ? `<div class="auth-msg ${authMessage.type}">${esc(authMessage.text)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function handleLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email || !email.includes('@')) {
+    authMessage = { type: 'error', text: 'Please enter a valid email' };
+    render();
+    return;
+  }
+  signInWithMagicLink(email);
+}
+
+// ── Main render ──────────────────────────────────────────
+function render(){
+  if (!currentUser) {
+    renderAuth();
+    return;
+  }
+  
+  if(detailProjectId !== null){
+    renderDetail();
+    return;
+  }
+  const filtered = activeFilter==='All' ? projects : projects.filter(p=>STATUS_LABELS[p.status]===activeFilter);
+  const c={inprogress:0,planned:0,paused:0,done:0};
+  projects.forEach(p=>c[p.status]=(c[p.status]||0)+1);
+
+  document.getElementById('app').innerHTML = `
+    <div class="shell">
+      <div class="top-row">
+        <div class="header"><h1>My Projects</h1><p>Personal tracker — roadmap &amp; active work</p></div>
+        <div class="header-actions">
+          <span class="user-badge" title="${esc(currentUser.email)}">${esc(currentUser.email)}</span>
+          <button class="logout-btn" onclick="logout()">Sign out</button>
+          <button class="add-btn" onclick="openAdd()">+ Add project</button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">In Progress</div><div class="stat-val">${c.inprogress||0}</div></div>
+        <div class="stat"><div class="stat-label">Planned</div><div class="stat-val">${c.planned||0}</div></div>
+        <div class="stat"><div class="stat-label">Paused</div><div class="stat-val">${c.paused||0}</div></div>
+        <div class="stat"><div class="stat-label">Done</div><div class="stat-val">${c.done||0}</div></div>
+      </div>
+      <div class="filters">
+        ${FILTER_LABELS.map(f=>`<button class="fbtn ${activeFilter===f?'active':''}" onclick="setFilter('${f}')">${f}</button>`).join('')}
+      </div>
+      ${loading
+        ? `<div class="loading">Loading projects…</div>`
+        : `<div class="grid">
+            ${filtered.length ? filtered.map(cardHTML).join('') : '<div class="empty">No projects here yet.</div>'}
+           </div>`
+      }
+    </div>
+    ${modal ? modalHTML() : ''}
+  `;
+}
+
+function cardHTML(p){
+  const tc = todoCount(p.id);
+  const todoLabel = tc.total > 0
+    ? `<span class="todo-pill">${tc.done}/${tc.total} tasks</span>`
+    : `<span class="todo-pill">No tasks</span>`;
+  return `<div class="card" onclick="openDetail(${p.id})">
+    <div class="card-top">
+      <span class="card-title">${esc(p.title)}</span>
+      <span class="badge b-${p.status}">${STATUS_LABELS[p.status]}</span>
+    </div>
+    <p class="card-desc">${esc(p.description)||'<span style="color:var(--text3)">No description</span>'}</p>
+    <div class="tags">${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+    <div class="prog-row">
+      <div class="prog-bar"><div class="prog-fill pf-${p.status}" style="width:${p.progress||0}%"></div></div>
+      <span class="prog-pct">${p.progress||0}%</span>
+    </div>
+    <div class="card-footer">
+      ${todoLabel}
+      <div class="card-actions" onclick="event.stopPropagation()">
+        <button class="act-btn" onclick="openEdit(${p.id})">Edit</button>
+        <button class="act-btn del-btn" onclick="confirmDelete(${p.id})">Delete</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Detail view ──────────────────────────────────────────
+async function openDetail(id){
+  detailProjectId = id;
+  if(!todos[id]){
+    renderDetail();
+    try{
+      todos[id] = await loadTodos(id);
+    } catch(e){ todos[id]=[]; toast('Failed to load tasks'); }
+  }
+  todoFilter = 'all';
+  renderDetail();
+}
+
+function renderDetail(){
+  const p = projects.find(x=>x.id===detailProjectId);
+  if(!p){ detailProjectId=null; render(); return; }
+  const tlist = todos[p.id] || [];
+  const filtered = todoFilter==='open' ? tlist.filter(t=>!t.done)
+                 : todoFilter==='done' ? tlist.filter(t=>t.done)
+                 : tlist;
+
+  document.getElementById('app').innerHTML = `
+    <div class="detail-overlay">
+      <div class="detail-shell">
+        <button class="detail-back" onclick="closeDetail()">← Back to projects</button>
+        <div class="detail-header">
+          <div>
+            <div class="detail-title">${esc(p.title)}</div>
+            <div class="detail-meta">
+              <span class="badge b-${p.status}">${STATUS_LABELS[p.status]}</span>
+              ${(p.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}
+              ${p.link?`<a href="${esc(p.link)}" target="_blank" rel="noopener" style="font-size:12px;color:var(--blue-text)" onclick="event.stopPropagation()">View repo →</a>`:''}
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn" onclick="openEdit(${p.id})">Edit project</button>
+            <button class="act-btn del-btn" onclick="confirmDelete(${p.id})">Delete</button>
+          </div>
+        </div>
+        ${p.description?`<p class="detail-desc">${esc(p.description)}</p>`:''}
+        <div class="detail-prog-row">
+          <div class="detail-prog-bar"><div class="detail-prog-fill" style="width:${p.progress||0}%"></div></div>
+          <span class="detail-prog-pct">${p.progress||0}%</span>
+        </div>
+
+        <div class="todos-section">
+          <div class="todos-header">
+            <span class="todos-title">Tasks</span>
+            <span style="font-size:12px;color:var(--text3)">${tlist.filter(t=>t.done).length}/${tlist.length} done</span>
+          </div>
+          <div class="todo-add-row">
+            <input id="todo-text" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTodo(${p.id})"/>
+            <select id="todo-priority">
+              <option value="high">🔴 High</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+            <input type="date" id="todo-due"/>
+            <button class="todo-add-btn" onclick="addTodo(${p.id})">Add</button>
+          </div>
+          <div class="todo-filters">
+            ${['all','open','done'].map(f=>`<button class="todo-fbtn ${todoFilter===f?'active':''}" onclick="setTodoFilter('${f}',${p.id})">${f.charAt(0).toUpperCase()+f.slice(1)}</button>`).join('')}
+          </div>
+          <div class="todo-list">
+            ${filtered.length ? filtered.map(t=>todoHTML(t)).join('') : `<div class="todo-empty">No tasks here.</div>`}
+          </div>
+        </div>
+      </div>
+    </div>
+    ${modal ? modalHTML() : ''}
+  `;
+}
+
+function todoHTML(t){
+  const overdueClass = isOverdue(t.due_date) && !t.done ? 'due-overdue' : 'due-label';
+  return `<div class="todo-item ${t.done?'done-item':''}">
+    <input type="checkbox" class="todo-check" ${t.done?'checked':''} onchange="toggleTodo(${t.id},this.checked,${t.project_id})"/>
+    <div class="todo-body">
+      <div class="todo-text">${esc(t.text)}</div>
+      <div class="todo-sub">
+        <span class="priority-badge p-${t.priority}">${t.priority}</span>
+        ${t.due_date?`<span class="${overdueClass}">${isOverdue(t.due_date)&&!t.done?'⚠ ':''}Due ${fmt(t.due_date)}</span>`:''}
+      </div>
+    </div>
+    <button class="todo-del" onclick="deleteTodo(${t.id},${t.project_id})">✕</button>
+  </div>`;
+}
+
+function closeDetail(){ detailProjectId=null; render(); }
+
+function setTodoFilter(f, pid){ todoFilter=f; renderDetail(); }
+
+async function addTodo(pid){
+  const textEl = document.getElementById('todo-text');
+  const text = textEl.value.trim();
+  if(!text) return;
+  const priority = document.getElementById('todo-priority').value;
+  const due_date = document.getElementById('todo-due').value || null;
+  try{
+    const [created] = await createTodo({project_id:pid, text, priority, due_date, done:false});
+    if(!todos[pid]) todos[pid]=[];
+    todos[pid].push(created);
+    renderDetail();
+  } catch(e){ toast('Failed to add task'); }
+}
+
+async function toggleTodo(id, done, pid){
+  try{
+    const [updated] = await updateTodo(id, {done});
+    todos[pid] = todos[pid].map(t=>t.id===id?{...t,done}:t);
+    renderDetail();
+  } catch(e){ toast('Failed to update task'); }
+}
+
+async function deleteTodo(id, pid){
+  try{
+    await deleteTodoApi(id);
+    todos[pid] = todos[pid].filter(t=>t.id!==id);
+    renderDetail();
+  } catch(e){ toast('Failed to delete task'); }
+}
+
+// ── Project modal ────────────────────────────────────────
+function openAdd(){ modal={mode:'add'}; render(); }
+function openEdit(id){
+  const p = projects.find(x=>x.id===id);
+  modal = {mode:'edit', project:p};
+  if(detailProjectId!==null) renderDetail(); else render();
+}
+
+function modalHTML(){
+  const isEdit = modal.mode==='edit';
+  const p = isEdit ? modal.project : {title:'',description:'',status:'planned',tags:[],progress:0,link:''};
+  return `<div class="overlay" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h2>${isEdit?'Edit project':'New project'}</h2>
+      <div class="field"><label>Title</label><input id="m-title" value="${esc(p.title)}" placeholder="Project name"/></div>
+      <div class="field"><label>Description</label><textarea id="m-desc">${esc(p.description)}</textarea></div>
+      <div class="field"><label>Status</label>
+        <select id="m-status">${STATUSES.map(s=>`<option value="${s}"${p.status===s?' selected':''}>${STATUS_LABELS[s]}</option>`).join('')}</select>
+      </div>
+      <div class="field"><label>Tags (comma separated)</label><input id="m-tags" value="${esc((p.tags||[]).join(', '))}" placeholder="Python, ML, OSS"/></div>
+      <div class="field"><label>Progress</label>
+        <div class="range-row">
+          <input id="m-progress" type="range" min="0" max="100" step="1" value="${p.progress||0}" oninput="document.getElementById('m-pct').textContent=this.value+'%'"/>
+          <span class="range-val" id="m-pct">${p.progress||0}%</span>
+        </div>
+      </div>
+      <div class="field"><label>Link</label><input id="m-link" value="${esc(p.link||'')}" placeholder="https://github.com/..."/></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="modal=null;${detailProjectId!==null?'renderDetail()':'render()'}">Cancel</button>
+        <button class="btn-primary" onclick="saveModal(${isEdit?p.id:'null'})">${isEdit?'Save changes':'Add project'}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function closeModal(e){ modal=null; if(detailProjectId!==null) renderDetail(); else render(); }
+
+async function saveModal(id){
+  const title = document.getElementById('m-title').value.trim();
+  if(!title) return;
+  const obj = {
+    title,
+    description: document.getElementById('m-desc').value.trim(),
+    status: document.getElementById('m-status').value,
+    tags: document.getElementById('m-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    progress: parseInt(document.getElementById('m-progress').value),
+    link: document.getElementById('m-link').value.trim()
+  };
+  try{
+    if(id===null){
+      const [created] = await createProject(obj);
+      projects.push(created);
+      toast('Project added');
+    } else {
+      const [updated] = await updateProject(id, obj);
+      projects = projects.map(p=>p.id===id?{...p,...updated}:p);
+      if(detailProjectId===id && modal) modal.project={...modal.project,...updated};
+      toast('Project saved');
+    }
+    modal=null;
+    if(detailProjectId!==null) renderDetail(); else render();
+  } catch(e){ toast('Failed to save project'); }
+}
+
+async function confirmDelete(id){
+  if(!confirm('Delete this project and all its tasks?')) return;
+  try{
+    await deleteProjectApi(id);
+    projects = projects.filter(p=>p.id!==id);
+    delete todos[id];
+    if(detailProjectId===id) detailProjectId=null;
+    modal=null;
+    toast('Project deleted');
+    render();
+  } catch(e){ toast('Failed to delete project'); }
+}
+
+function setFilter(f){ activeFilter=f; render(); }
+
+init();
+</script>
+</body>
+</html>
